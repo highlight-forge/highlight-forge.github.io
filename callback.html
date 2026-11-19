@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Never send this page's URL (which holds the one-time code) to any other site. -->
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="noindex">
+  <title>Account connected · Highlight Forge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <header>
+    <a class="brand" href="./">Highlight<span>Forge</span></a>
+  </header>
+
+  <h1 id="title">Almost done</h1>
+  <p class="muted" id="intro">Copy this address and paste it into the window that's waiting for it.</p>
+
+  <div class="card">
+    <span class="url" id="url"></span>
+    <button id="copy" type="button">Copy</button>
+    <span id="copied" class="muted" hidden>&nbsp;Copied.</span>
+  </div>
+
+  <p class="muted">The code in this address works only once and expires in a few minutes. Don't share it with anyone.</p>
+</main>
+<script>
+  // Everything stays in this page: nothing is sent anywhere.
+  var params = new URLSearchParams(location.search);
+  var url = document.getElementById("url");
+  if (params.get("error")) {
+    document.getElementById("title").textContent = "Connection cancelled";
+    document.getElementById("intro").textContent = "TikTok didn't connect the account: " + params.get("error") + ". Run the connect step again.";
+    document.querySelector(".card").hidden = true;
+  } else if (!params.get("code")) {
+    document.getElementById("title").textContent = "Nothing to connect";
+    document.getElementById("intro").textContent = "This page is only used while connecting a TikTok account.";
+    document.querySelector(".card").hidden = true;
+  } else {
+    url.textContent = location.href;
+  }
+  document.getElementById("copy").addEventListener("click", function () {
+    navigator.clipboard.writeText(location.href).then(function () {
+      document.getElementById("copied").hidden = false;
+    });
+  });
+</script>
+</body>
+</html>
